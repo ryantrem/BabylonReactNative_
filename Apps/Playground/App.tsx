@@ -26,7 +26,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import {TestVal} from 'react-native-babylon';
+import { TestVal, TestView } from 'react-native-babylon';
 
 declare var global: {HermesInternal: null | {}};
 
@@ -47,6 +47,7 @@ const App = () => {
           <View style={styles.body}>
             <View style={styles.sectionContainer}>
               <Text style={styles.sectionTitle}>Step One {TestVal}</Text>
+              <TestView style={{flex: 1, width: 100, height: 50}} />
               <Text style={styles.sectionDescription}>
                 Edit <Text style={styles.highlight}>App.tsx</Text> to change
                 this screen and then come back to see your edits.
