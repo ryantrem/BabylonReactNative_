@@ -26,12 +26,22 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(ANDROID_STL "c++_shared")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 
+#message(SEND_ERROR "ANDROID_JSC_LIBPATH ${ANDROID_JSC_LIBPATH}/${ANDROID_ABI}/libjsc.so")
+#message(SEND_ERROR "ANDROID_JSC_INCPATH ${ANDROID_JSC_INCPATH}")
+
+# configure Babylon Native to use JSC (specifically the one that is part of the React Native application)
+set(NAPI_JAVASCRIPT_ENGINE "JavaScriptCore" CACHE STRING "The JavaScript engine to power N-API")
+add_library(javascript_engine SHARED IMPORTED GLOBAL)
+set_target_properties(javascript_engine PROPERTIES IMPORTED_LOCATION "${ANDROID_JSC_LIBPATH}/${ANDROID_ABI}/libjsc.so")
+target_include_directories(javascript_engine INTERFACE "${ANDROID_JSC_INCPATH}")
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/src/")
 
 set(BABYLON_NATIVE_DIR "${CMAKE_CURRENT_LIST_DIR}/../submodules/BabylonNative")
 add_subdirectory(${BABYLON_NATIVE_DIR}/Dependencies/ ${BABYLON_NATIVE_DIR}/build/Android_${CMAKE_ANDROID_ARCH_ABI}/Dependencies/)
 add_subdirectory(${BABYLON_NATIVE_DIR}/Core/ ${BABYLON_NATIVE_DIR}/build/Android_${CMAKE_ANDROID_ARCH_ABI}/Core/)
 add_subdirectory(${BABYLON_NATIVE_DIR}/Plugins/ ${BABYLON_NATIVE_DIR}/build/Android_${CMAKE_ANDROID_ARCH_ABI}/Plugins/)
+# add_subdirectory(${BABYLON_NATIVE_DIR}) // TODO: We can probably switch to just adding the Babylon Native top level dir instead of the individual folders.
 
 add_library(BabylonNativeJNI SHARED
             src/main/cpp/BabylonNativeJNI.cpp)

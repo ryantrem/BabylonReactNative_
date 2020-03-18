@@ -71,7 +71,9 @@ android {
                         '-DCURL_DISABLE_SMTP=ON',
                         '-DENABLE_GLSLANG_BINARIES=OFF',
                         '-DSPIRV_CROSS_CLI=OFF',
-                        '-DHAVE_LIBIDN2=OFF'
+                        '-DHAVE_LIBIDN2=OFF',
+                        "-DANDROID_JSC_LIBPATH=${rootDir}/app/build/intermediates/transforms/mergeJniLibs/debug/0/lib", // TODO: Either figure out how to parameterize 'debug' or manually extract the aar to a known location to get the .so path. If the latter, may need to use the 'jscFlavor' var to know which aar to extract.
+                        "-DANDROID_JSC_INCPATH=${rootDir}/../node_modules/jsc-android/dist/include" // TODO: Babylon expects all the JSC headers to be in a 'JavaScriptCore' directory (e.g. #include "JavaScriptCore/JavaScript.h"), so we probably need to copy these headers into a temp build dir that contains a 'JavaScriptCore' directory with all the includes, and pass that top level dir here.
             }
         }
     }
