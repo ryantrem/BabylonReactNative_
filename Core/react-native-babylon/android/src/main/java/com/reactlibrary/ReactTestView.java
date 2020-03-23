@@ -19,5 +19,7 @@ public class ReactTestView extends AppCompatTextView {
         long address = reactContext.getJavaScriptContextHolder().get();
         long ptr = getJsGlobalContextRef.GetJsGlobalContextRef(address);
         System.out.println(ptr);
+
+        Wrapper.initEngine(reactContext, ptr, null);
     }
 }
