@@ -1,23 +1,45 @@
 package com.reactlibrary;
 
-import androidx.appcompat.widget.AppCompatTextView;
+import android.view.Surface;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 
 import com.babylon.GetJsGlobalContextRef;
 import com.facebook.react.bridge.ReactContext;
 
-public class ReactTestView extends AppCompatTextView {
+public class ReactTestView extends SurfaceView implements SurfaceHolder.Callback2 {
     private final ReactContext reactContext;
 
     public ReactTestView(ReactContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
-        this.setText("this is a native test component");
+        this.getHolder().addCallback(this);
+    }
 
+    @Override
+    public void surfaceRedrawNeeded(SurfaceHolder surfaceHolder) {
+
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder surfaceHolder) {
+        Surface surface = surfaceHolder.getSurface();
         GetJsGlobalContextRef getJsGlobalContextRef = new GetJsGlobalContextRef();
         long address = reactContext.getJavaScriptContextHolder().get();
-        long ptr = getJsGlobalContextRef.GetJsGlobalContextRef(address);
-        System.out.println(ptr);
+        long jsContextPtr = getJsGlobalContextRef.GetJsGlobalContextRef(address);
 
-        BabylonNativeInterop.initEngine(reactContext, ptr, null);
+        this.reactContext.runOnJSQueueThread(() -> {
+            BabylonNativeInterop.initEngine(this.reactContext, jsContextPtr, surface);
+        });
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+
     }
 }

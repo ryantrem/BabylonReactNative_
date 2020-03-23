@@ -1,5 +1,10 @@
 #include <jni.h>
+
 #include <android/log.h>
+#include <android/native_window.h>
+#include <android/native_window_jni.h>
+
+#include <JavaScriptCore/JavaScript.h>
 
 namespace Babylon
 {
@@ -11,18 +16,15 @@ namespace Babylon
         }
     }
 
-    void Initialize()
+    void Initialize(JSGlobalContextRef jsContext, ANativeWindow* windowPtr)
     {
         log("INITIALIZED");
     }
 }
 
-extern "C"
+extern "C" JNIEXPORT void JNICALL Java_com_reactlibrary_BabylonNativeInterop_initEngine(JNIEnv* env, jclass obj, jobject appContext, jlong jscPtr, jobject surface)
 {
-    JNIEXPORT void JNICALL Java_com_reactlibrary_BabylonNativeInterop_initEngine(JNIEnv* env, jobject obj, jobject appContext, jlong jscPtr, jobject surface);
-}
-
-JNIEXPORT void JNICALL Java_com_reactlibrary_BabylonNativeInterop_initEngine(JNIEnv* env, jobject obj, jobject appContext, jlong jscPtr, jobject surface)
-{
-    Babylon::Initialize();
+    auto jsContext = reinterpret_cast<JSGlobalContextRef>(jscPtr);
+    ANativeWindow* windowPtr = ANativeWindow_fromSurface(env, surface);
+    Babylon::Initialize(jsContext, windowPtr);
 }
