@@ -73,6 +73,7 @@ android {
                         '-DSPIRV_CROSS_CLI=OFF',
                         '-DHAVE_LIBIDN2=OFF',
                         "-DANDROID_JSC_LIBPATH=${rootDir}/app/build/intermediates/transforms/mergeJniLibs/debug/0/lib", // TODO: Either figure out how to parameterize 'debug' or manually extract the aar to a known location to get the .so path. If the latter, may need to use the 'jscFlavor' var to know which aar to extract.
+                        //"-DANDROID_JSC_LIBPATH=/Users/ryantremblay/Downloads/Justin-BN-RN/BabylonNativeJscPlugin/submodules/JSC-Android/Lib",
                         "-DANDROID_JSC_INCPATH=${buildDir}/JSC"
             }
         }

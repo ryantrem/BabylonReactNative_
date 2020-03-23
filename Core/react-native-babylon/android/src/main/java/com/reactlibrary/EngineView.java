@@ -5,7 +5,10 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.babylon.GetJsGlobalContextRef;
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 public class EngineView extends SurfaceView implements SurfaceHolder.Callback2 {
     private final ReactContext reactContext;
@@ -30,6 +33,14 @@ public class EngineView extends SurfaceView implements SurfaceHolder.Callback2 {
 
         this.reactContext.runOnJSQueueThread(() -> {
             BabylonNativeInterop.initEngine(this.reactContext, jsContextPtr, surface);
+            this.reactContext.runOnUiQueueThread(() -> {
+                WritableMap event = Arguments.createMap();
+                this.reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(
+                        this.getId(),
+                        "viewReady",
+                        event
+                );
+            });
         });
     }
 
