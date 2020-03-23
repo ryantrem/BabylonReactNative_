@@ -1,7 +1,5 @@
 package com.reactlibrary;
 
-import android.content.Context;
-
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.babylon.GetJsGlobalContextRef;
@@ -20,6 +18,6 @@ public class ReactTestView extends AppCompatTextView {
         long ptr = getJsGlobalContextRef.GetJsGlobalContextRef(address);
         System.out.println(ptr);
 
-        Wrapper.initEngine(reactContext, ptr, null);
+        BabylonNativeInterop.initEngine(reactContext, ptr, null);
     }
 }

@@ -19,10 +19,10 @@ namespace Babylon
 
 extern "C"
 {
-    JNIEXPORT void JNICALL Java_com_reactlibrary_Wrapper_initEngine(JNIEnv* env, jobject obj, jobject appContext, jlong jscPtr, jobject surface);
+    JNIEXPORT void JNICALL Java_com_reactlibrary_BabylonNativeInterop_initEngine(JNIEnv* env, jobject obj, jobject appContext, jlong jscPtr, jobject surface);
 }
 
-JNIEXPORT void JNICALL Java_com_reactlibrary_Wrapper_initEngine(JNIEnv* env, jobject obj, jobject appContext, jlong jscPtr, jobject surface)
+JNIEXPORT void JNICALL Java_com_reactlibrary_BabylonNativeInterop_initEngine(JNIEnv* env, jobject obj, jobject appContext, jlong jscPtr, jobject surface)
 {
     Babylon::Initialize();
 }

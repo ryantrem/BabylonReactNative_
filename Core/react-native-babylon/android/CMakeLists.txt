@@ -21,9 +21,7 @@ cmake_minimum_required(VERSION 3.13.2)
 project(ReactNativeBabylon)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 set(BABYLON_NATIVE_PLATFORM "Android")
-set(OPENGL_LIB GLESv3)
 set(CMAKE_CXX_EXTENSIONS OFF)
-set(ANDROID_STL "c++_shared")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 
 #message(SEND_ERROR "ANDROID_JSC_LIBPATH ${ANDROID_JSC_LIBPATH}/${ANDROID_ABI}/libjsc.so")
@@ -43,22 +41,22 @@ add_subdirectory(${BABYLON_NATIVE_DIR}/Core/ ${BABYLON_NATIVE_DIR}/build/Android
 add_subdirectory(${BABYLON_NATIVE_DIR}/Plugins/ ${BABYLON_NATIVE_DIR}/build/Android_${CMAKE_ANDROID_ARCH_ABI}/Plugins/)
 # add_subdirectory(${BABYLON_NATIVE_DIR}) // TODO: We can probably switch to just adding the Babylon Native top level dir instead of the individual folders.
 
-add_library(BabylonNativeJNI SHARED
-            src/main/cpp/BabylonNativeJNI.cpp)
+add_library(BabylonNative SHARED
+    src/main/cpp/BabylonNativeInterop.cpp)
 
-target_compile_definitions(BabylonNativeJNI PRIVATE NODE_ADDON_API_DISABLE_DEPRECATED)
+target_compile_definitions(BabylonNative PRIVATE NODE_ADDON_API_DISABLE_DEPRECATED)
 
 # add_definitions(-DANDROID_STL=c++_shared)
 
-target_link_libraries(BabylonNativeJNI
-        ${OPENGL_LIB}
-        android
-        EGL
-        log
-        -lz
-        JsRuntime
-        NativeWindow
-        NativeEngine)
+target_link_libraries(BabylonNative
+    GLESv3
+    android
+    EGL
+    log
+    -lz
+    JsRuntime
+    NativeWindow
+    NativeEngine)
 
 # configure_file(
 #     "${ANDROID_NDK}/sources/cxx-stl/llvm-libc++/libs/${ANDROID_ABI}/libc++_shared.so"
