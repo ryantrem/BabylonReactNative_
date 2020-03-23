@@ -5,17 +5,17 @@ import androidx.annotation.NonNull;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 
-public class ReactTestViewManager extends SimpleViewManager<ReactTestView> {
+public class EngineViewManager extends SimpleViewManager<EngineView> {
 
     @NonNull
     @Override
     public String getName() {
-        return "ReactTestView";
+        return "EngineView";
     }
 
     @NonNull
     @Override
-    protected ReactTestView createViewInstance(@NonNull ThemedReactContext reactContext) {
-        return new ReactTestView(reactContext);
+    protected EngineView createViewInstance(@NonNull ThemedReactContext reactContext) {
+        return new EngineView(reactContext);
     }
 }

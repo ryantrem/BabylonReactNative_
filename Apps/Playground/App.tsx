@@ -26,7 +26,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import { TestVal, TestView } from 'react-native-babylon';
+import { TestVal, EngineView } from 'react-native-babylon';
 
 declare var global: {HermesInternal: null | {}};
 
@@ -43,7 +43,7 @@ const App = () => {
               <Text style={styles.footer}>Engine: Hermes</Text>
             </View>
           )}
-          <TestView style={{width: '100%', height: 400}} />
+          <EngineView style={{width: '100%', height: 400}} />
           <View style={styles.body}>
             <View style={styles.sectionContainer}>
               <Text style={styles.sectionTitle}>Step One {TestVal}</Text>

@@ -7,10 +7,10 @@ import android.view.SurfaceView;
 import com.babylon.GetJsGlobalContextRef;
 import com.facebook.react.bridge.ReactContext;
 
-public class ReactTestView extends SurfaceView implements SurfaceHolder.Callback2 {
+public class EngineView extends SurfaceView implements SurfaceHolder.Callback2 {
     private final ReactContext reactContext;
 
-    public ReactTestView(ReactContext reactContext) {
+    public EngineView(ReactContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
         this.getHolder().addCallback(this);

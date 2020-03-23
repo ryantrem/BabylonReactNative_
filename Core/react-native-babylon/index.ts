@@ -6,4 +6,4 @@ export default Babylon;
 
 export const TestVal = "test val 2";
 
-export * from './TestView';
+export * from './EngineView';
