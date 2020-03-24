@@ -26,22 +26,15 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import { TestVal, EngineView } from 'react-native-babylon';
-import { NativeEngine, Scene, Vector3, Mesh, ArcRotateCamera } from '@babylonjs/core'
+import { EngineView } from 'react-native-babylon';
+import { Scene, Vector3, Mesh, ArcRotateCamera, Engine } from '@babylonjs/core'
 
 declare var global: {HermesInternal: null | {}};
 
 const App = () => {
-  const onEngineViewReady = (event: any) => {
+  const onEngineViewReady = (engine: Engine) => {
     console.log("*************************  Native Engine Initialized  *************************");
 
-    // TEMP HACK: Override this because Babylon Native uses the presence of window.requestAnimationFrame to decide whether to run the native or JS code path, but React Native polyfills window.requestAnimationFrame.
-    (NativeEngine.prototype as any)._queueNewFrame = function (bindedRenderFunction: any, requester: any) {
-      this._native.requestAnimationFrame(bindedRenderFunction);
-      return 0;
-    };
-
-    var engine = new NativeEngine();
     var scene = new Scene(engine);
     scene.createDefaultCamera(true);
     if (scene.activeCamera != null) {
@@ -55,9 +48,15 @@ const App = () => {
       scene.meshes[0].rotate(Vector3.Up(), 0.005 * scene.getAnimationRatio());
     };
 
-    engine.runRenderLoop(function () {
-      scene.render();
-    });
+    // engine.runRenderLoop(function () {
+    //   scene.render();
+    // });
+
+    // engine.runRenderLoop(function () {
+    //   if (engine.activeView?.camera !== null) {
+    //     engine.activeView?.camera?.getScene().render();
+    //   }
+    // });
   };
 
   return (
@@ -72,10 +71,10 @@ const App = () => {
               <Text style={styles.footer}>Engine: Hermes</Text>
             </View>
           )}
-          <EngineView style={{width: '100%', height: 400}} viewReady={onEngineViewReady} />
+          <EngineView style={{width: '100%', height: 400}} onViewReady={onEngineViewReady} />
           <View style={styles.body}>
             <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One {TestVal}</Text>
+              <Text style={styles.sectionTitle}>Step One</Text>
               <Text style={styles.sectionDescription}>
                 Edit <Text style={styles.highlight}>App.tsx</Text> to change
                 this screen and then come back to see your edits.
