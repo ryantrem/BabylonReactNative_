@@ -27,31 +27,37 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import { TestVal, EngineView } from 'react-native-babylon';
-//import { NativeEngine, Scene, Vector3, Mesh, ArcRotateCamera } from '@babylonjs/core'
+import { NativeEngine, Scene, Vector3, Mesh, ArcRotateCamera } from '@babylonjs/core'
 
 declare var global: {HermesInternal: null | {}};
 
 const App = () => {
   const onEngineViewReady = (event: any) => {
-    console.log("*************************  Native Engine Initialized  *************************")
+    console.log("*************************  Native Engine Initialized  *************************");
 
-    // var engine = new NativeEngine();
-    // var scene = new Scene(engine);
-    // scene.createDefaultCamera(true);
-    // if (scene.activeCamera != null) {
-    //   (scene.activeCamera as ArcRotateCamera).alpha += Math.PI;
-    // }
-    // scene.createDefaultLight(true);
+    // TEMP HACK: Override this because Babylon Native uses the presence of window.requestAnimationFrame to decide whether to run the native or JS code path, but React Native polyfills window.requestAnimationFrame.
+    (NativeEngine.prototype as any)._queueNewFrame = function (bindedRenderFunction: any, requester: any) {
+      this._native.requestAnimationFrame(bindedRenderFunction);
+      return 0;
+    };
 
-    // Mesh.CreateBox("box1", 0.7, scene);
+    var engine = new NativeEngine();
+    var scene = new Scene(engine);
+    scene.createDefaultCamera(true);
+    if (scene.activeCamera != null) {
+      (scene.activeCamera as ArcRotateCamera).alpha += Math.PI;
+    }
+    scene.createDefaultLight(true);
 
-    // scene.beforeRender = function () {
-    //   scene.meshes[0].rotate(Vector3.Up(), 0.005 * scene.getAnimationRatio());
-    // };
+    Mesh.CreateBox("box1", 0.3, scene);
 
-    // engine.runRenderLoop(function () {
-    //   scene.render();
-    // });
+    scene.beforeRender = function () {
+      scene.meshes[0].rotate(Vector3.Up(), 0.005 * scene.getAnimationRatio());
+    };
+
+    engine.runRenderLoop(function () {
+      scene.render();
+    });
   };
 
   return (
