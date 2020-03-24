@@ -47,16 +47,6 @@ const App = () => {
     scene.beforeRender = function () {
       scene.meshes[0].rotate(Vector3.Up(), 0.005 * scene.getAnimationRatio());
     };
-
-    // engine.runRenderLoop(function () {
-    //   scene.render();
-    // });
-
-    // engine.runRenderLoop(function () {
-    //   if (engine.activeView?.camera !== null) {
-    //     engine.activeView?.camera?.getScene().render();
-    //   }
-    // });
   };
 
   return (
