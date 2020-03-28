@@ -8,9 +8,9 @@ This quick overview will help you get started developing in the Babylon Native r
 
 ### **All Development Platforms, Common First Steps**
 
-**Required Tools:** [git](https://git-scm.com/), [CMake](https://cmake.org/), [NPM](https://nodejs.org/)
+**Required Tools:** [git](https://git-scm.com/), [CMake](https://cmake.org/), [Yarn](https://classic.yarnpkg.com/en/docs/install)
 
-1. Run `npm install` from the `Apps/Playground` directory.
+1. Run `yarn install` from the `Apps/Playground` directory.
 
 ### **Building for Android**
 
