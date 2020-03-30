@@ -5,13 +5,13 @@
  * @format
  */
 
-import React, { useState } from 'react';
-import { SafeAreaView, StatusBar, Button, View } from 'react-native';
+import React, { useState, FunctionComponent } from 'react';
+import { SafeAreaView, StatusBar, Button, View, Text, ViewProps } from 'react-native';
 
 import { EngineView, useEngine } from 'react-native-babylon';
-import { Scene, Vector3, Mesh, ArcRotateCamera, Engine, Camera } from '@babylonjs/core';
+import { Scene, Vector3, Mesh, ArcRotateCamera, Engine, Camera, PBRMetallicRoughnessMaterial, Color3, PromisePolyfill } from '@babylonjs/core';
 
-const App = () => {
+const EngineScreen: FunctionComponent<ViewProps> = (props: ViewProps) => {
   const [toggleView, setToggleView] = useState(false);
   const [camera, setCamera] = useState<Camera>();
 
@@ -19,12 +19,17 @@ const App = () => {
     var scene = new Scene(engine);
     scene.createDefaultCamera(true);
     if (scene.activeCamera != null) {
-      (scene.activeCamera as ArcRotateCamera).alpha += Math.PI;
+      (scene.activeCamera as ArcRotateCamera).beta -= Math.PI / 8;
       setCamera(scene.activeCamera);
     }
     scene.createDefaultLight(true);
 
-    Mesh.CreateBox("box1", 0.3, scene);
+    const box = Mesh.CreateBox("box", 0.4, scene);
+    const mat = new PBRMetallicRoughnessMaterial("mat", scene);
+    mat.metallic = 1;
+    mat.roughness = 0.5;
+    mat.baseColor = Color3.Red();
+    box.material = mat;
 
     scene.beforeRender = function () {
       scene.meshes[0].rotate(Vector3.Up(), 0.005 * scene.getAnimationRatio());
@@ -33,17 +38,39 @@ const App = () => {
 
   return (
     <>
+      <View style={props.style}>
+        { !toggleView &&
+          <EngineView style={props.style} camera={camera} />
+        }
+        { toggleView &&
+          <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <Text style={{fontSize: 24}}>EngineView has been removed.</Text>
+            <Text style={{fontSize: 12}}>Render loop stopped, but engine is still alive.</Text>
+          </View>
+        }
+        <Button title="Toggle EngineView" onPress={() => { setToggleView(!toggleView) }} />
+      </View>
+    </>
+  );
+};
+
+const App = () => {
+  const [toggleView, setToggleView] = useState(false);
+
+  return (
+    <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView style={{flex: 1}}>
         { !toggleView &&
-          <EngineView style={{flex: 1}} camera={camera} />
+          <EngineScreen style={{flex: 1}} />
         }
         { toggleView &&
-          <View style={{flex: 1}}>
-            <EngineView style={{flex: 1}} camera={camera} />
+          <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <Text style={{fontSize: 24}}>EngineScreen has been removed.</Text>
+            <Text style={{fontSize: 12}}>Engine has been disposed, and will be recreated.</Text>
           </View>
         }
-        <Button title="Toggle View Instance" onPress={() => { setToggleView(!toggleView) }} />
+        <Button title="Toggle EngineScreen" onPress={() => { setToggleView(!toggleView) }} />
       </SafeAreaView>
     </>
   );
