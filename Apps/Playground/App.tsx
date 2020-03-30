@@ -24,7 +24,7 @@ const EngineScreen: FunctionComponent<ViewProps> = (props: ViewProps) => {
     }
     scene.createDefaultLight(true);
 
-    const box = Mesh.CreateBox("box", 0.4, scene);
+    const box = Mesh.CreateBox("box", 0.3, scene);
     const mat = new PBRMetallicRoughnessMaterial("mat", scene);
     mat.metallic = 1;
     mat.roughness = 0.5;
