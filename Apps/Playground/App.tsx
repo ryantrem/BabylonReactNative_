@@ -55,22 +55,22 @@ const EngineScreen: FunctionComponent<ViewProps> = (props: ViewProps) => {
 };
 
 const App = () => {
-  const [toggleView, setToggleView] = useState(false);
+  const [toggleScreen, setToggleScreen] = useState(false);
 
   return (
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView style={{flex: 1}}>
-        { !toggleView &&
+        { !toggleScreen &&
           <EngineScreen style={{flex: 1}} />
         }
-        { toggleView &&
+        { toggleScreen &&
           <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <Text style={{fontSize: 24}}>EngineScreen has been removed.</Text>
             <Text style={{fontSize: 12}}>Engine has been disposed, and will be recreated.</Text>
           </View>
         }
-        <Button title="Toggle EngineScreen" onPress={() => { setToggleView(!toggleView) }} />
+        <Button title="Toggle EngineScreen" onPress={() => { setToggleScreen(!toggleScreen) }} />
       </SafeAreaView>
     </>
   );
